@@ -5,6 +5,7 @@ class CreateApps < ActiveRecord::Migration[5.0]
       t.integer :year
       t.integer :duration_in_seconds
       t.json :availabilities
+      t.boolean :favorite_app, default: false
       t.timestamps
     end
   end

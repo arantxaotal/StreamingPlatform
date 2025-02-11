@@ -20,15 +20,6 @@ html
         h1 = @app&.original_title
         h2 = @app.content.name
 
-      / Search Bar
-      .search-container
-        = form_tag app_show_path(@app.id), method: :get, class: "search-form" do
-          .form-group
-            = label_tag :original_title, "Name"
-            = text_field_tag :original_title, params[:original_title], placeholder: "Enter name...", class: "form-control"
-
-          = submit_tag "Search", class: "search-button"
-
     - if @channel_programs
           / Table
           table

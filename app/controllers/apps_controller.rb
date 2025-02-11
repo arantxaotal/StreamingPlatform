@@ -24,6 +24,9 @@ class AppsController < ApplicationController
       if params[:type]
         @apps = @apps.joins(:content).where(contents:{name:params[:type]})
       end
+      if params[:original_title]
+        @apps = @apps.where("original_title like '%#{params[:original_title]}%'")
+      end
     end
     if @content&.name =='Channel'
       @channel_programs_favorites = ChannelProgram.joins(:channel).where(channels:{app_id:@apps.map(&:id)})

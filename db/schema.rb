@@ -13,12 +13,13 @@
 ActiveRecord::Schema.define(version: 20250210190133) do
 
   create_table "apps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3" do |t|
-    t.string   "original_title",      null: false
+    t.string   "original_title",                      null: false
     t.integer  "year"
     t.integer  "duration_in_seconds"
     t.json     "availabilities"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.boolean  "favorite_app",        default: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.integer  "content_id"
     t.index ["content_id"], name: "index_apps_on_content_id", using: :btree
   end

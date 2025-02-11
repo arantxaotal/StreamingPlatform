@@ -24,20 +24,22 @@ html
         h1 Channels
 
       / Search Bar
-      .search-container
-        = form_tag apps_path(@content&.name||'All'), method: :get, class: "search-form" do
-          .form-group
-            = label_tag :original_title, "Name"
-            = text_field_tag :original_title, params[:original_title], placeholder: "Enter name...", class: "form-control"
+      - content = @content&.name||'All'
+      -if content == 'All' || content == 'Movie' || content == 'TV Show'
+        .search-container
+          = form_tag apps_path(@content&.name||'All'), method: :get, class: "search-form" do
+            .form-group
+              = label_tag :original_title, "Name"
+              = text_field_tag :original_title, params[:original_title], placeholder: "Enter name...", class: "form-control"
 
-          .form-group
-            = label_tag :country, "Countries"
-            = select_tag :country, options_for_select([['Great Britain', 'gb'], ['Spain', 'es'], ['France', 'fr']], params[:country]), multiple: true, class: "form-control"
-          .form-group
-            = label_tag :type, "Type"
-            = select_tag :type, options_for_select([['TV Show', 'TV Show'], ['Movie', 'Movie'], ['Channel', 'Channel']], params[:type]), multiple: true, class: "form-control"
+            .form-group
+              = label_tag :country, "Countries"
+              = select_tag :country, options_for_select([['Great Britain', 'gb'], ['Spain', 'es'], ['France', 'fr']], params[:country]), multiple: true, class: "form-control"
+            .form-group
+              = label_tag :type, "Type"
+              = select_tag :type, options_for_select([['TV Show', 'TV Show'], ['Movie', 'Movie'], ['Channel', 'Channel']], params[:type]), multiple: true, class: "form-control"
 
-          = submit_tag "Search", class: "search-button"
+            = submit_tag "Search", class: "search-button"
 
       / Table
       table
