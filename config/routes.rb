@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   get 'apps/:content_name', to: 'apps#index', as: :apps
   get 'apps_show/:app_id', to: 'apps#show', as: :app_show
+  get 'apps_update/:app_id', to: 'apps#update', as: :app_update
 
   get 'apps/show'
 

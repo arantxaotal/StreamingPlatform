@@ -65,6 +65,14 @@ class AppsController < ApplicationController
   end
 
   def update
+    @app = App.find_by(id:params[:app_id])
+    if @app.favorite_app == true
+      @app.update(favorite_app:false)
+    else
+      @app.update(favorite_app:true)
+    end
+    redirect_to apps_path('All')
+
   end
 
   def destroy

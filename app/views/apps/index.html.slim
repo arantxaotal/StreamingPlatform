@@ -47,16 +47,39 @@ html
           tr
             th Title
             th Type
+            th Year
+            th Available in
             th Actions
         tbody
           - @apps&.each do |app|
             tr
               td = app.original_title
               td = app&.content&.name
+              td = app&.year
+              td = app&.availabilities.map{|a| a["app"]}.join(',')
+              td
+                = link_to "View", app_show_path(app.id), class: "btn btn-primary"
+                - if app.favorite_app == false
+                  = link_to "Add Favorite", app_update_path(app.id), class: "btn btn-primary"
+                - else
+                  = link_to "Remove Favorite", app_update_path(app.id), class: "btn btn-primary"
+
+      h1 Favourite Content
+      table
+        thead
+          tr
+            th Title
+            th Type
+            th Actions
+        tbody
+          - @apps&.where(favorite_app:true).each do |app|
+            tr
+              td = app.original_title
+              td = app&.content&.name
               td
                 = link_to "View", app_show_path(app.id), class: "btn btn-primary"
       - if @content&.name == 'Channel'
-        h1 = 'Favorite programs'
+        h1 = 'Favourite programs'
         table
           thead
             tr
