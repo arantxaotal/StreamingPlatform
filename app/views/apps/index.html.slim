@@ -9,34 +9,68 @@ html
     header
       h1 Streaming Platform TV
       nav
+        = link_to "All Content", apps_path('All')
         = link_to "Movies", apps_path('Movie')
         = link_to "TV Shows", apps_path('TV Show')
         = link_to "Channels", apps_path('Channel')
 
-
     main
-      == yield
-      h1 Channel Programs
+      = yield
+      - if @content&.name == 'Movie'
+        h1 Movies
+      - elsif @content&.name == 'TV Show'
+        h1 TV Shows
+      - elsif @content&.name == 'Channel'
+        h1 Channels
 
       / Search Bar
       .search-container
-        = form_tag url: root_path, method: :get, class: "search-form" do
-          = text_field_tag :query, params[:query], placeholder: "Search programs...", class: "search-input"
+        = form_tag apps_path(@content&.name||'All'), method: :get, class: "search-form" do
+          .form-group
+            = label_tag :original_title, "Name"
+            = text_field_tag :original_title, params[:original_title], placeholder: "Enter name...", class: "form-control"
+
+          .form-group
+            = label_tag :country, "Countries"
+            = select_tag :country, options_for_select([['Great Britain', 'gb'], ['Spain', 'es'], ['France', 'fr']], params[:country]), multiple: true, class: "form-control"
+          .form-group
+            = label_tag :type, "Type"
+            = select_tag :type, options_for_select([['TV Show', 'TV Show'], ['Movie', 'Movie'], ['Channel', 'Channel']], params[:type]), multiple: true, class: "form-control"
+
           = submit_tag "Search", class: "search-button"
 
+      / Table
       table
         thead
           tr
             th Title
+            th Type
             th Actions
         tbody
           - @apps&.each do |app|
             tr
               td = app.original_title
+              td = app&.content&.name
               td
-                = link_to "Edit", nil, class: "btn btn-primary"
-                = link_to "Delete", nil, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
-
+                = link_to "View", app_show_path(app.id), class: "btn btn-primary"
+      - if @content&.name == 'Channel'
+        h1 = 'Favorite programs'
+        table
+          thead
+            tr
+              th Program
+              th Year
+              th Time Watched
+          tbody
+            - @channel_programs_favorites&.each do |channel_p|
+              tr
+                td = channel_p&.channel&.number.to_s+'. '+channel_p.original_title
+                td = channel_p&.year
+                - seconds_difference = 0
+                - channel_p.schedule.select { |a|
+                - start_date = Time.parse(a["start_time"])
+                - end_date = Time.parse(a["end_time"])
+                - seconds_difference += (end_date - start_date).to_i }
+                td = seconds_difference
     footer
       p © 2025 Streaming Platform
-

@@ -1,2 +1,71 @@
-<h1>Apps#show</h1>
-<p>Find me in app/views/apps/show.html.erb</p>
+doctype html
+html
+  head
+    title Streaming Platform
+    = csrf_meta_tags
+    = stylesheet_link_tag "application", media: "all"
+    = javascript_include_tag "application"
+  body
+    header
+      h1 Streaming Platform TV
+      nav
+        = link_to "All Content", apps_path('All')
+        = link_to "Movies", apps_path('Movie')
+        = link_to "TV Shows", apps_path('TV Show')
+        = link_to "Channels", apps_path('Channel')
+
+    main
+      = yield
+      - if @app&.content&.name
+        h1 = @app&.original_title
+        h2 = @app.content.name
+
+      / Search Bar
+      .search-container
+        = form_tag app_show_path(@app.id), method: :get, class: "search-form" do
+          .form-group
+            = label_tag :original_title, "Name"
+            = text_field_tag :original_title, params[:original_title], placeholder: "Enter name...", class: "form-control"
+
+          = submit_tag "Search", class: "search-button"
+
+    - if @channel_programs
+          / Table
+          table
+            thead
+              tr
+                th Program
+                th Year
+                th Seconds Watched
+            tbody
+              - @channel_programs&.each do |channel_p|
+                tr
+                  td = channel_p&.channel&.number.to_s+'. '+channel_p.original_title
+                  td = channel_p&.year
+                  -seconds_difference = 0
+                  -channel_p.schedule.select{|a|
+                  -start_date = Time.parse(a["start_time"])
+                  -end_date = Time.parse(a["end_time"])
+                  -seconds_difference += (end_date - start_date).to_i}
+                  td = seconds_difference
+
+
+
+    - if @chapters
+      / Table
+      table
+        thead
+          tr
+
+            th Season
+            th Chapter
+        tbody
+          - @chapters&.each do |chapter|
+            tr
+              td = chapter.season.number.to_s+'. '+chapter.season.original_title+' ('+chapter.season.year.to_s+')'
+              td = chapter.number.to_s+'X'+chapter.season.number.to_s+' '+chapter.original_title+' ('+chapter.year.to_s+')'
+
+
+
+    footer
+      p © 2025 Streaming Platform

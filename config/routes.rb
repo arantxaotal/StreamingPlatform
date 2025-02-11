@@ -55,6 +55,7 @@ Rails.application.routes.draw do
   get 'channel_programs/destroy'
 
   get 'apps/:content_name', to: 'apps#index', as: :apps
+  get 'apps_show/:app_id', to: 'apps#show', as: :app_show
 
   get 'apps/show'
 

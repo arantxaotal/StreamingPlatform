@@ -9,6 +9,7 @@ html
     header
       h1 Streaming Platform TV
       nav
+        = link_to "All Content", apps_path("All")
         = link_to "Movies", apps_path('Movie')
         = link_to "TV Shows", apps_path('TV Show')
         = link_to "Channels", apps_path('Channel')
