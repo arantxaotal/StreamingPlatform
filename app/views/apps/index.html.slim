@@ -1,0 +1,42 @@
+doctype html
+html
+  head
+    title Streaming Platform
+    = csrf_meta_tags
+    = stylesheet_link_tag "application", media: "all"
+    = javascript_include_tag "application"
+  body
+    header
+      h1 Streaming Platform TV
+      nav
+        = link_to "Movies", apps_path('Movie')
+        = link_to "TV Shows", apps_path('TV Show')
+        = link_to "Channels", apps_path('Channel')
+
+
+    main
+      == yield
+      h1 Channel Programs
+
+      / Search Bar
+      .search-container
+        = form_tag url: root_path, method: :get, class: "search-form" do
+          = text_field_tag :query, params[:query], placeholder: "Search programs...", class: "search-input"
+          = submit_tag "Search", class: "search-button"
+
+      table
+        thead
+          tr
+            th Title
+            th Actions
+        tbody
+          - @apps&.each do |app|
+            tr
+              td = app.original_title
+              td
+                = link_to "Edit", nil, class: "btn btn-primary"
+                = link_to "Delete", nil, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
+
+    footer
+      p © 2025 Streaming Platform
+

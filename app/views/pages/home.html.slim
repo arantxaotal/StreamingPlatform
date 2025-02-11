@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title Streaming Platform
+    = csrf_meta_tags
+    = stylesheet_link_tag "application", media: "all"
+    = javascript_include_tag "application"
+  body
+    header
+      h1 Streaming Platform TV
+      nav
+        = link_to "Movies", apps_path('Movie')
+        = link_to "TV Shows", apps_path('TV Show')
+        = link_to "Channels", apps_path('Channel')
+
+
+    main
+      == yield
+
+    footer
+      p © 2025 Streaming Platform

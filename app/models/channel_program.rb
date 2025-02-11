@@ -1,0 +1,2 @@
+class ChannelProgram < ApplicationRecord
+end
